@@ -19,9 +19,9 @@ function getClientIP(event: RequestEvent) {
 
 export const handle: Handle = async ({ event, resolve }) => {
 	let ip = getClientIP(event);
-	event.setHeaders('X-User-IP', ip)
 	event.locals.clientIP = ip;
 	let response = await resolve(event);
+	response.headers.set('X-User-IP', ip);
 	return response;
 };
 
