@@ -1,0 +1,248 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Settings {
+  key   String    @unique
+  value String
+}
+
+// -----------------
+// User Management
+// -----------------
+model User {
+  id           String   @id @default(uuid())
+  affID        String
+  email        String   @unique
+  passwordHash String
+  username     String   @unique
+  fullName     String?
+  country      String?
+  role         UserRole @default(TRADER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  sessions      Session[]
+  accounts      Account[]
+  transactions  Transaction[]
+  trades        Trade[]
+  deposits      Deposit[]
+  withdrawals   Withdrawal[]
+  SupportTicket SupportTicket[]
+}
+
+enum UserRole {
+  ADMIN
+  TRADER
+  PARTNER
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  token      String   @unique
+  user_agent String?
+  ip_address String?
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+}
+
+// -----------------
+// Accounts (Demo & Live)
+// -----------------
+model Account {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  type      AccountType
+  balance   Float       @default(0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Relations
+  trades       Trade[]
+  transactions Transaction[]
+  Deposit      Deposit[]
+  Withdrawal   Withdrawal[]
+
+  @@unique([userId, type]) // exactly one DEMO and one LIVE per user
+}
+
+enum AccountType {
+  DEMO
+  LIVE
+}
+
+// -----------------
+// Trading Core
+// -----------------
+model Asset {
+  id         String    @id @default(uuid())
+  source     String    @unique
+  name       String
+  type       AssetType
+  isOTC      Boolean   @default(false)
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  payoutPerc Int
+
+  trades Trade[]
+}
+
+enum AssetType {
+  FOREX
+  CRYPTO
+  STOCK
+  COMMODITY
+}
+
+model Trade {
+  id         String      @id @default(uuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  accountId  String
+  account    Account     @relation(fields: [accountId], references: [id])
+  assetId    String
+  asset      Asset       @relation(fields: [assetId], references: [id])
+  amount     Float
+  direction  Direction
+  openPrice  Float
+  closePrice Float?
+  payout     Float?
+  status     TradeStatus @default(OPEN)
+  openAt     DateTime    @default(now())
+  closeAt    DateTime
+}
+
+enum Direction {
+  UP
+  DOWN
+}
+
+enum TradeStatus {
+  OPEN
+  WON
+  LOST
+  CLOSED
+  CANCELED
+}
+
+// -----------------
+// Wallet / Transactions
+// -----------------
+model Transaction {
+  id        String            @id @default(uuid())
+  userId    String
+  user      User              @relation(fields: [userId], references: [id])
+  accountId String
+  account   Account           @relation(fields: [accountId], references: [id])
+  type      TransactionType
+  amount    Float
+  status    TransactionStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRADE_PAYOUT
+  BONUS
+  ADJUSTMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELED
+}
+
+model Deposit {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  accountId String
+  account   Account       @relation(fields: [accountId], references: [id])
+  amount    Float
+  method    String
+  status    DepositStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+}
+
+enum DepositStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model Withdrawal {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  accountId String
+  account   Account          @relation(fields: [accountId], references: [id])
+  amount    Float
+  method    String
+  status    WithdrawalStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+}
+
+enum WithdrawalStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REJECTED
+}
+
+// -----------------
+// Support
+// -----------------
+model Contact {
+  id String @id @default(uuid())
+  name String?
+  email String?
+  subject String?
+  message String?
+  ip  String?
+}
+
+model SupportTicket {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  subject   String
+  messages  TicketMessage[]
+  status    TicketStatus    @default(OPEN)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model TicketMessage {
+  id        String        @id @default(uuid())
+  message   String
+  from      FromType
+  createdAt DateTime      @default(now())
+  ticketId  String
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id])
+}
+
+enum FromType {
+  USER
+  TEAM
+}

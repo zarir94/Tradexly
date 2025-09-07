@@ -1,12 +1,23 @@
 <script lang="ts">
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
-
-	let { children } = $props();
+	import PI from "$lib/assets/preview_image.png";
+	export let children;
+	export let data;
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<!-- Open Graph Meta Tags for Social Media Sharing -->
+	<meta property="og:title" content="{data.cached.site_name} - {data.cached.site_slogan}">
+	<meta property="og:description" content="Tradingly is a binary trading platform where you can gain enough trusting your instinct. Beginner or Pro - whoever you are, every trade counts here. In short, its your gateway to gains.">
+	<meta property="og:image" content="{PI}">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="{data.cached.site_name}">
+
+	<!-- Twitter Card Meta Tags (for Twitter-specific previews) -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="{data.cached.site_name} - {data.cached.site_slogan}">
+	<meta name="twitter:description" content="Tradingly is a binary trading platform where you can gain enough trusting your instinct. Beginner or Pro - whoever you are, every trade counts here. In short, its your gateway to gains.">
+	<meta name="twitter:image" content="{PI}">
 </svelte:head>
 
 {@render children?.()}
