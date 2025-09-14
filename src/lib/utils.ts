@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import prisma from "./prisma";
 
 function parseValue(val: string): string | number | boolean {
@@ -30,3 +31,10 @@ export async function isEmailAcceptable(email: string) {
 	return null;
 }
 
+export async function hashPassword(password: string) {
+	return await bcrypt.hash(password, await bcrypt.genSalt(7))
+}
+
+export async function comparePassword(password: string, hash: string) {
+  return await bcrypt.compare(password, hash)
+}

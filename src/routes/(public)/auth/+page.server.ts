@@ -2,8 +2,7 @@
 import { redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import prisma from "$main/src/lib/prisma";
-import bcrypt from "bcrypt";
-import { isEmailAcceptable } from "$main/src/lib/utils";
+import { comparePassword, hashPassword, isEmailAcceptable } from "$main/src/lib/utils";
 
 function daysFromNow(x: number): Date {
     const d = new Date();
@@ -29,7 +28,7 @@ export const actions: Actions = {
                 u = await prisma.user.findFirst({ where: { username } })
             }
             if (!u) return {type: 'error', message: 'The Account doesnt exists on the given username/email'};
-            if (!await bcrypt.compare(password, u.passwordHash)) return {type: 'error', message: 'Invalid Password!'};
+            if (!await comparePassword(password, u.passwordHash)) return {type: 'error', message: 'Invalid Password!'};
             let ses = await prisma.session.create({ data: { userId: u.id, token: crypto.randomUUID(), user_agent: locals.userAgent, ip_address: locals.clientIP, expiresAt: daysFromNow(30) } })
 
             cookies.set('session', ses.token, { path: '/', maxAge: 30 * 24 * 60 * 60, httpOnly: true })
@@ -47,6 +46,7 @@ export const actions: Actions = {
             let { fullName, username, email, password, passwordConfirm } = Object.fromEntries((await request.formData()).entries());
             if (fullName?.split(' ').length < 2) return {type: 'error', message: 'Full Name must have at least 2 parts'};
             if (password != passwordConfirm) return {type: 'error', message: 'Password and Confirm Password does not match'};
+            if (password?.length < 6) return {type: 'error', message: 'Password must be atleast 6 chars long'};
             if (await prisma.user.findFirst({ where: { username } })) return {type: 'error', message: 'Username already exists, choose another'};
             if (await prisma.user.findFirst({ where: { email } })) return {type: 'error', message: 'This email is already registered'};
             let esr = await isEmailAcceptable(email);
@@ -54,7 +54,7 @@ export const actions: Actions = {
             let country = await fetch('http://ip-api.com/json/' + ip).then(r=>r.json()).then(d=>d.country || null);
 
             await prisma.$transaction(async (tx) => {
-                let user = await tx.user.create({ data: { fullName, username, email, country, affID, passwordHash: await bcrypt.hash(password, 5) } });
+                let user = await tx.user.create({ data: { fullName, username, email, country, affID, passwordHash: await hashPassword(password) } });
                 await tx.account.create({ data: { userId: user.id, type: 'DEMO', balance: 10000 } });
                 await tx.account.create({ data: { userId: user.id, type: "LIVE", balance: 0 } });
             })

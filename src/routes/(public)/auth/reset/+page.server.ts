@@ -1,8 +1,8 @@
 //@ts-nocheck
 import { sendMail } from "$main/src/lib/js/mailjet";
 import prisma from "$main/src/lib/prisma";
+import { hashPassword } from "$main/src/lib/utils";
 import type { Actions, PageServerLoad } from "./$types";
-import bcrypt from "bcrypt";
 
 let resetEmailHTML = (name: string, link: string) => `
 <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8" style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
@@ -86,9 +86,10 @@ export const actions: Actions = {
     update: async ({ request }) => {
         let { token, password, passwordConfirm } = Object.fromEntries((await request.formData()).entries());
         if (password != passwordConfirm) return { type: 'error', message: 'Password and Confirm Password does not match' };
+        if (password?.length < 6) return {type: 'error', message: 'Password must be atleast 6 chars long'};
         let u = await prisma.user.findFirst({ where: { resetToken: token } });
         if (!u) return { type: 'error', message: 'The reset link is either deleted or expired. Please refresh the page and request another' };
-        await prisma.user.update({ where: { email: u.email }, data: { passwordHash: await bcrypt.hash(password, 5), resetToken: null } });
+        await prisma.user.update({ where: { email: u.email }, data: { passwordHash: await hashPassword(password), resetToken: null } });
         return { type: 'success', message: 'Your password has been updated. Feel free to login' };
     }
 };
