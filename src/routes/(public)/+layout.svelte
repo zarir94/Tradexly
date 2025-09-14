@@ -32,6 +32,7 @@
 	onMount(()=>{
 		locals.window = window;
 		let BS = _=>locals.scrollY = window.scrollY;
+		BS();
 		window.addEventListener('scroll', BS);
 		return ()=>{
 			window.removeEventListener('scroll', BS);

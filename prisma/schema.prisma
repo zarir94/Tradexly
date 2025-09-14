@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Settings {
-  key   String    @unique
+  key   String @unique
   value String
 }
 
@@ -18,12 +18,13 @@ model Settings {
 // -----------------
 model User {
   id           String   @id @default(uuid())
-  affID        String
+  affID        String?
   email        String   @unique
   passwordHash String
   username     String   @unique
   fullName     String?
   country      String?
+  resetToken   String?  @unique
   role         UserRole @default(TRADER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -207,12 +208,13 @@ enum WithdrawalStatus {
 // Support
 // -----------------
 model Contact {
-  id String @id @default(uuid())
-  name String?
-  email String?
+  id      String  @id @default(uuid())
+  name    String?
+  email   String?
   subject String?
   message String?
-  ip  String?
+  ip      String?
+  seen    Boolean @default(false)
 }
 
 model SupportTicket {

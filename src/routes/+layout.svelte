@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import PI from "$lib/assets/preview_image.png";
+	import { ProgressBar } from "@prgm/sveltekit-progress-bar";
 	export let children;
 	export let data;
 </script>
@@ -20,4 +21,5 @@
 	<meta name="twitter:image" content="{PI}">
 </svelte:head>
 
+<ProgressBar class="text-emerald-600" zIndex={999999} maximum={0.965}/>
 {@render children?.()}
