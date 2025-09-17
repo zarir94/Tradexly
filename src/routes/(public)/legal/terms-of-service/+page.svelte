@@ -12,10 +12,10 @@
 	<p><b>Last Updated:</b> September 11, 2025</p>
 
 	<p>
-		Welcome to Tradexly (“we,” “us,” “our,” or “Tradexly”). Tradexly operates an online trading
+		Welcome to TradeXcope (“we,” “us,” “our,” or “TradeXcope”). TradeXcope operates an online trading
 		platform that enables users to trade various financial instruments including currency pairs,
 		commodities, indices, and cryptocurrencies. These Terms of Service (“Terms”) govern your access
-		to and use of the Tradexly website, mobile applications, and all related services (collectively,
+		to and use of the TradeXcope website, mobile applications, and all related services (collectively,
 		the “Platform”).
 	</p>
 
@@ -27,7 +27,7 @@
 	<h2>1. Acceptance of Terms</h2>
 
 	<p>
-		These Terms constitute a legally binding agreement between you and Tradexly. Your use of the
+		These Terms constitute a legally binding agreement between you and TradeXcope. Your use of the
 		Platform constitutes your acceptance of these Terms and any future modifications. We reserve the
 		right to update, modify, or replace any part of these Terms at any time. Material changes will
 		be communicated via email or posted on the Platform. Your continued use of the Platform after
@@ -49,7 +49,7 @@
 
 	<p>
 		By using the Platform, you represent and warrant that you meet all eligibility requirements.
-		Tradexly may, at its sole discretion, refuse service, terminate accounts, or cancel orders for
+		TradeXcope may, at its sole discretion, refuse service, terminate accounts, or cancel orders for
 		any user who violates these eligibility conditions.
 	</p>
 
@@ -59,12 +59,12 @@
 	<ul>
 		<li>Provide truthful and accurate registration information;</li>
 		<li>Maintain the security of your password and account credentials;</li>
-		<li>Notify Tradexly immediately of any unauthorized use of your account;</li>
+		<li>Notify TradeXcope immediately of any unauthorized use of your account;</li>
 		<li>Be fully responsible for all activities that occur under your account.</li>
 	</ul>
 
 	<p>
-		Tradexly is not liable for any loss or damage arising from your failure to comply with this
+		TradeXcope is not liable for any loss or damage arising from your failure to comply with this
 		section. You may not transfer or share your account with any third party without our prior
 		written consent.
 	</p>
@@ -72,7 +72,7 @@
 	<h2>4. Platform Services</h2>
 
 	<p>
-		Tradexly provides users with a platform to trade financial instruments through binary options,
+		TradeXcope provides users with a platform to trade financial instruments through binary options,
 		digital contracts, and other derivative products. Services include:
 	</p>
 	<ul>
@@ -103,7 +103,7 @@
 		<li>You are aware of the risks associated with leveraged and derivative trading;</li>
 		<li>You are solely responsible for any losses incurred;</li>
 		<li>
-			You will not hold Tradexly liable for market movements, platform delays, or execution errors
+			You will not hold TradeXcope liable for market movements, platform delays, or execution errors
 			beyond our reasonable control;
 		</li>
 		<li>
@@ -114,7 +114,7 @@
 
 	<h2>6. Fees and Charges</h2>
 
-	<p>Tradexly may charge fees for certain services, including but not limited to:</p>
+	<p>TradeXcope may charge fees for certain services, including but not limited to:</p>
 	<ul>
 		<li>Deposit and withdrawal processing fees;</li>
 		<li>Inactivity fees after prolonged account dormancy;</li>
@@ -136,7 +136,7 @@
 		verification and compliance checks.
 	</p>
 
-	<p>Tradexly reserves the right to:</p>
+	<p>TradeXcope reserves the right to:</p>
 	<ul>
 		<li>Request identity or source-of-funds verification before processing withdrawals;</li>
 		<li>Refuse or delay withdrawals if suspicious activity is detected;</li>
@@ -172,7 +172,7 @@
 
 	<p>
 		All content, trademarks, logos, software, graphics, and interface elements on the Platform are
-		the exclusive property of Tradexly or its licensors and are protected by copyright, trademark,
+		the exclusive property of TradeXcope or its licensors and are protected by copyright, trademark,
 		and other intellectual property laws. You are granted a limited, non-exclusive,
 		non-transferable, revocable license to access and use the Platform for personal, non-commercial
 		purposes only.
@@ -188,7 +188,7 @@
 	<h2>10. Limitation of Liability</h2>
 
 	<p>
-		To the fullest extent permitted by law, Tradexly shall not be liable for any indirect,
+		To the fullest extent permitted by law, TradeXcope shall not be liable for any indirect,
 		incidental, special, consequential, or punitive damages, or any loss of profits or revenues,
 		whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible
 		losses, resulting from:
@@ -212,15 +212,15 @@
 	</ol>
 
 	<p>
-		Under no circumstances shall Tradexly’s aggregate liability arising out of or related to these
-		Terms exceed the total amount of fees you paid to Tradexly in the 6 months preceding the event
+		Under no circumstances shall TradeXcope’s aggregate liability arising out of or related to these
+		Terms exceed the total amount of fees you paid to TradeXcope in the 6 months preceding the event
 		giving rise to the claim.
 	</p>
 
 	<h2>11. Indemnification</h2>
 
 	<p>
-		You agree to indemnify, defend, and hold harmless Tradexly, its affiliates, officers, directors,
+		You agree to indemnify, defend, and hold harmless TradeXcope, its affiliates, officers, directors,
 		employees, agents, licensors, and suppliers from and against all claims, liabilities, damages,
 		judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys’ fees)
 		arising out of or resulting from:
@@ -237,7 +237,7 @@
 	<h2>12. Termination</h2>
 
 	<p>
-		Tradexly may suspend or terminate your access to the Platform at any time, with or without cause
+		TradeXcope may suspend or terminate your access to the Platform at any time, with or without cause
 		or notice, including for any violation of these Terms. Upon termination, your right to use the
 		Platform will immediately cease. All provisions of these Terms which by their nature should
 		survive termination shall survive, including ownership provisions, warranty disclaimers,
@@ -274,7 +274,7 @@
 	<h2>15. Amendments</h2>
 
 	<p>
-		Tradexly reserves the right to modify these Terms at any time. We will notify you of material
+		TradeXcope reserves the right to modify these Terms at any time. We will notify you of material
 		changes by posting the updated Terms on the Platform and updating the “Last Updated” date. Your
 		continued use of the Platform after such notice constitutes your acceptance of the revised
 		Terms. If you do not agree to the changes, you must stop using the Platform.
@@ -291,8 +291,8 @@
 	<h2>17. Entire Agreement</h2>
 
 	<p>
-		These Terms, together with our Privacy Policy and any other legal notices published by Tradexly
-		on the Platform, constitute the entire agreement between you and Tradexly concerning the
+		These Terms, together with our Privacy Policy and any other legal notices published by TradeXcope
+		on the Platform, constitute the entire agreement between you and TradeXcope concerning the
 		Platform and supersede all prior or contemporaneous communications and proposals, whether oral
 		or written.
 	</p>
@@ -301,15 +301,15 @@
 
 	<p>If you have any questions about these Terms, please contact us at:</p>
 	<p>
-		<b>Email:</b> support@tradexly.com<br />
-		<b>Address:</b> Tradexly Ltd., 90 Fort Street, P.O. Box 32010, George Town, Grand Cayman, KY1-1205,
+		<b>Email:</b> support@tradexcope.com<br />
+		<b>Address:</b> TradeXcope Ltd., 90 Fort Street, P.O. Box 32010, George Town, Grand Cayman, KY1-1205,
 		Cayman Islands
 	</p>
 
 	<h2>19. Miscellaneous</h2>
 
 	<p>
-		Tradexly’s failure to enforce any right or provision of these Terms will not be considered a
+		TradeXcope’s failure to enforce any right or provision of these Terms will not be considered a
 		waiver of such right or provision. The section titles in these Terms are for convenience only
 		and have no legal or contractual effect.
 	</p>
@@ -323,7 +323,7 @@
 	<h2>20. Acknowledgement</h2>
 
 	<p>
-		BY USING THE TRADEXLY PLATFORM, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS, UNDERSTAND THEM,
+		BY USING THE TradeXcope PLATFORM, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS, UNDERSTAND THEM,
 		AND AGREE TO BE BOUND BY THEM. YOU FURTHER ACKNOWLEDGE THAT YOU HAVE HAD THE OPPORTUNITY TO SEEK
 		INDEPENDENT LEGAL ADVICE PRIOR TO ACCEPTING THESE TERMS.
 	</p>

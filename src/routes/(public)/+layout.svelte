@@ -47,14 +47,14 @@
 
 <div class="w-full h-full text-white">
 	<div class="max-w-screen-2xl mx-auto header-container p-1 sm:p-1.5 md:p-2 lg:p-3 sticky top-0 left-0 z-30">
-		<header class="w-full h-14 {locals.scrollY > 60 ? 'bg-white/10 backdrop-blur-xl' : ''} rounded-xl px-3 py-2 flex justify-between items-center transition-all duration-300 ease-out">
-			<button class="sm:hidden flex items-center mr-3 cursor-pointer" on:click={()=>locals.showMenu = true}>
+		<header class="w-full h-14 {locals.scrollY > 60 ? 'bg-white/10 backdrop-blur-xl dwnd' : 'upd'} rounded-xl px-3 py-2 flex justify-between items-center transition-all duration-300 ease-out">
+			<button class="md:hidden flex items-center mr-3 cursor-pointer" on:click={()=>locals.showMenu = true}>
 				<MenuIcon></MenuIcon>
 			</button>
-			<a class="block h-full invisible-overlay active:scale-75 fadeDown mr-auto sm:mr-0" href="/">
+			<a class="block sla h-full invisible-overlay active:scale-75 fadeDown mr-auto md:mr-0" href="/">
 				<img src="{SL}" alt="Site Logo" class="h-full">
 			</a>
-			<div class="hidden sm:flex gap-3 md:gap-4 lg:gap-5 xl:gap-6">
+			<div class="hidden md:flex gap-3 md:gap-4 lg:gap-5 xl:gap-6">
 				{#each Object.entries(HMENU) as [n, l], i}
 					<a href="{l}" class="hml
 					text-slate-100 text-xl font-semibold fadeDown
@@ -135,4 +135,7 @@
 			left: calc(100% + 7px);
 		}
 	}
+	.sla img { --ds: drop-shadow(0px 0px 3px theme(--color-emerald-800)); filter: var(--ds); -webkit-filter: var(--ds); }
+	.upd .sla { @apply scale-[120%] translate-x-[10%] sm:scale-[140%] sm:translate-x-[20%] lg:scale-[160%] lg:translate-x-[30%]; }
+	.dwnd .sla { @apply scale-[110%] translate-x-[5%] sm:scale-[120%] sm:translate-x-[10%] lg:scale-[130%] lg:translate-x-[15%]; }
 </style>

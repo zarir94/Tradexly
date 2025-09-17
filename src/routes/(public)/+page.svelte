@@ -16,17 +16,17 @@
       'Where Market meets <b>Innovation</b>'
     ],
     FAQs: {
-      "How do I start trading on Tradexly?": "<b>Sign up</b> and begin practicing with our demo account using virtual funds. Once you're comfortable, switch to a live account to trade with real funds.",     
+      "How do I start trading on TradeXcope?": "<b>Sign up</b> and begin practicing with our demo account using virtual funds. Once you're comfortable, switch to a live account to trade with real funds.",     
       "How long does it take to withdraw funds?": "Withdrawals typically process within <b>1 to 5 business days</b>, depending on volume and your chosen payment method. We strive to complete withdrawals as quickly as possible.",
-      "What is Tradexly’s trading platform and what does it offer?": "Our trading platform is a web-based application that gives you access to real-time market data, charts, order execution tools, and account analytics—all in a <b>streamlined, user-friendly interface</b>.",
+      "What is TradeXcope’s trading platform and what does it offer?": "Our trading platform is a web-based application that gives you access to real-time market data, charts, order execution tools, and account analytics—all in a <b>streamlined, user-friendly interface</b>.",
       "Can I trade using a mobile device?": "Yes—you can trade using any modern browser on your smartphone or tablet",
       "What is the minimum deposit amount?": "You can start trading with as little as <b>$10</b>, making it accessible even if you're just getting started.",
-      "Are there any deposit or withdrawal fees?": "Tradexly does <b>not charge fees</b> for deposits or withdrawals. However, third-party payment providers may impose their own fees or currency conversion charges.",
-      "What types of assets can I trade on Tradexly?": "We offer a variety of instruments including <b>forex pairs, commodities, indices, and cryptocurrencies</b>. Availability may vary by account region and type.",
-      "Is there a demo account available?": "Yes—Tradexly provides a free <b>demo account</b> that you can use to practice trading without any financial risk, using virtual funds.",
-      "How do I deposit funds into my Tradexly account?": "Deposits can be made via <b>credit/debit card, bank transfer, or e-wallets</b>. Simply navigate to the 'Deposit' section in your account area and follow the on-screen instructions.",
+      "Are there any deposit or withdrawal fees?": "TradeXcope does <b>not charge fees</b> for deposits or withdrawals. However, third-party payment providers may impose their own fees or currency conversion charges.",
+      "What types of assets can I trade on TradeXcope?": "We offer a variety of instruments including <b>forex pairs, commodities, indices, and cryptocurrencies</b>. Availability may vary by account region and type.",
+      "Is there a demo account available?": "Yes—TradeXcope provides a free <b>demo account</b> that you can use to practice trading without any financial risk, using virtual funds.",
+      "How do I deposit funds into my TradeXcope account?": "Deposits can be made via <b>credit/debit card, bank transfer, or e-wallets</b>. Simply navigate to the 'Deposit' section in your account area and follow the on-screen instructions.",
       "What customer support options are available?": "You can reach our support team through <b>live chat, support ticket or contact form</b>. We're available 24/7 to assist with any questions or concerns.",
-      "Is Tradexly regulated and secure?": "Tradexly operates under <b>strict regulatory oversight</b>. We use industry-standard encryption and secure servers to protect your data and funds."
+      "Is TradeXcope regulated and secure?": "TradeXcope operates under <b>strict regulatory oversight</b>. We use industry-standard encryption and secure servers to protect your data and funds."
     }
   };
   locals.HTi = Math.floor(Math.random() * locals.heroTitles.length);
@@ -71,7 +71,7 @@
       </a>
     </div>
   </div>
-  <h2 class="text-center text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mb-5 sm:mb-10">Why Choose Tradexly?</h2>
+  <h2 class="text-center text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mb-5 sm:mb-10">Why Choose {page.data.cached.site_name}?</h2>
   <div class="flex flex-col ">
   {#each data.features as f}
     <div class="feature flex flex-col md:flex-row gap-10 p-5 pb-10 mb-10 sm:pb-16 sm:mb-16 border-b-2 border-slate-200/20 last:border-b-0">
@@ -236,7 +236,7 @@
             opacity: 0.5;
         }
         50% {
-            transform: scaleY(1.5);
+            transform: scaleY(1.4);
             opacity: 0.7;
         }
     }

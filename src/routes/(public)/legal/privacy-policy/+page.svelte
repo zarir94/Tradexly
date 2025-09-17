@@ -13,7 +13,7 @@
 
 	<p>
 		Your privacy is not an afterthought — it is the foundation upon which we build trust. At
-		Tradexly, we treat your personal information with the highest degree of care, transparency, and
+		TradeXcope, we treat your personal information with the highest degree of care, transparency, and
 		respect. This Privacy Policy outlines how we collect, use, disclose, store, and protect your
 		data when you interact with our trading platform, website, mobile applications, customer support
 		channels, and all affiliated services (collectively, “the Platform”).
@@ -73,7 +73,7 @@
 
 	<p>
 		Your data is never sold. It is used solely to deliver, enhance, and safeguard your experience on
-		Tradexly. Specifically, we use your information to:
+		TradeXcope. Specifically, we use your information to:
 	</p>
 
 	<ul>
@@ -190,7 +190,7 @@
 	<h2>6. International Data Transfers</h2>
 
 	<p>
-		Tradexly operates globally. Your data may be transferred to, stored in, and processed in
+		TradeXcope operates globally. Your data may be transferred to, stored in, and processed in
 		jurisdictions outside your country of residence — including the Cayman Islands and other
 		countries with data protection laws that may differ from yours. We implement appropriate
 		safeguards, including Standard Contractual Clauses (SCCs) and encryption, to ensure your data
@@ -224,7 +224,7 @@
 	</ul>
 
 	<p>
-		To exercise any of these rights, please contact us at <b>support@tradexly.com</b>. We will
+		To exercise any of these rights, please contact us at <b>support@tradexcope.com</b>. We will
 		respond to your request within 30 days, subject to verification of your identity.
 	</p>
 
@@ -250,7 +250,7 @@
 	<h2>10. Children’s Privacy</h2>
 
 	<p>
-		Tradexly is not intended for use by individuals under the age of 18. We do not knowingly collect
+		TradeXcope is not intended for use by individuals under the age of 18. We do not knowingly collect
 		personal information from minors. If we become aware that we have inadvertently collected such
 		data, we will take immediate steps to delete it.
 	</p>
@@ -272,8 +272,8 @@
 	</p>
 
 	<p>
-		<b>Email:</b> support@tradexly.com<br />
-		<b>Mailing Address:</b> Tradexly Ltd., 90 Fort Street, P.O. Box 32010, George Town, Grand Cayman,
+		<b>Email:</b> support@tradexcope.com<br />
+		<b>Mailing Address:</b> TradeXcope Ltd., 90 Fort Street, P.O. Box 32010, George Town, Grand Cayman,
 		KY1-1205, Cayman Islands
 	</p>
 
@@ -282,7 +282,7 @@
 	<h2>13. Final Note: Your Trust, Our Priority</h2>
 
 	<p>
-		At Tradexly, we don’t just comply with privacy laws — we exceed them. We believe that true
+		At TradeXcope, we don’t just comply with privacy laws — we exceed them. We believe that true
 		innovation in fintech begins with uncompromising integrity in data stewardship. Your confidence
 		is our most valuable asset, and we guard it with vigilance, transparency, and relentless
 		dedication.
