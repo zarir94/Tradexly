@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { sendMail } from "$main/src/lib/js/mailjet";
 import prisma from "$main/src/lib/prisma";
-import { hashPassword } from "$main/src/lib/utils";
+import { hashPassword } from "$main/src/lib/func";
 import type { Actions, PageServerLoad } from "./$types";
 
 let resetEmailHTML = (name: string, link: string) => `
@@ -57,11 +57,13 @@ export const load: PageServerLoad = async ({ url, locals }) => {
         redirect(302, '/dashboard')
     }
     let alerts = [];
-    let query_token = url.searchParams.get('token');
     let token = null;
+    let query_token = url.searchParams.get('token');
     if (query_token) {
-        if (await prisma.user.findFirst({ where: { resetToken: query_token }, select: { id: true } })) { token = query_token }
-        else { alerts.push({ type: 'error', message: 'The Reset Link/Token is either deleted or expired.' }) }
+        if (await prisma.user.findFirst({ where: { resetToken: String(query_token) }, select: { id: true } })) { token = query_token }
+        else {
+            // alerts.push({ type: 'error', message: 'The Reset Link/Token is either deleted or expired.' })
+        }
     }
     return { token, alerts };
 };
@@ -69,13 +71,13 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 export const actions: Actions = {
     reset: async ({ request }) => {
         let { email } = Object.fromEntries((await request.formData()).entries());
-        let token = crypto.randomUUID();
-        let urlObj = new URL(request.url);
-        urlObj.search = "";
-        urlObj.searchParams.set("token", token);
-        let resetLink = urlObj.toString();
         let u = await prisma.user.findUnique({ where: { email: String(email) } });
         if (u) {
+            let token = u.resetToken || crypto.randomUUID();
+            let urlObj = new URL(request.url);
+            urlObj.search = "";
+            urlObj.searchParams.set("token", token);
+            let resetLink = urlObj.toString();
             await prisma.user.update({ where: { email: u.email }, data: { resetToken: token } });
             if (!await sendMail(u.email, u.fullName, 'A Password Reset Was Requested on Your Account', resetEmailHTML(u.fullName, resetLink))) {
                 return { type: 'error', message: 'We cannot send email at this moment. Please try again later' }

@@ -2,7 +2,7 @@
 import { redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import prisma from "$main/src/lib/prisma";
-import { comparePassword, hashPassword, isEmailAcceptable } from "$main/src/lib/utils";
+import { comparePassword, hashPassword, isEmailAcceptable } from "$main/src/lib/func";
 
 function daysFromNow(x: number): Date {
     const d = new Date();
@@ -31,7 +31,7 @@ export const actions: Actions = {
             if (!await comparePassword(password, u.passwordHash)) return {type: 'error', message: 'Invalid Password!'};
             let ses = await prisma.session.create({ data: { userId: u.id, token: crypto.randomUUID(), user_agent: locals.userAgent, ip_address: locals.clientIP, expiresAt: daysFromNow(30) } })
 
-            cookies.set('session', ses.token, { path: '/', maxAge: 30 * 24 * 60 * 60, httpOnly: true })
+            cookies.set('session', ses.token, { path: '/', maxAge: 30 * 24 * 60 * 60, httpOnly: true, secure: false })
             toRun = ()=>{ redirect(302, '/dashboard') };
         } catch (err) {
             console.error(err);

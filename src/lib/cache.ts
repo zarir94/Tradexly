@@ -1,6 +1,7 @@
 //@ts-nocheck
 import prisma from "./prisma";
-import { getSettings } from "./utils";
+import { getSettings } from "./func";
+
 
 let cached: CacheData;
 

@@ -1,40 +1,13 @@
-import bcrypt from "bcryptjs";
-import prisma from "./prisma";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-function parseValue(val: string): string | number | boolean {
-	if (val === 'true') return true;
-	if (val === 'false') return false;
-
-	if (!isNaN(Number(val)) && val.trim() !== '') {
-		return Number(val);
-	}
-	return val;
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
 }
 
-export async function getSettings(...keys: string[]) {
-    let r = await prisma.settings.findMany({ where: { key: { in: keys } } });
-    let d = Object.fromEntries(r.map(i => [i.key, parseValue(i.value)]));
-    return d;
-}
-
-export async function isEmailAcceptable(email: string) {
-	let r = await fetch('https://nobounce.onrender.com/?email=' + email);
-	if (!r.ok) return null;
-	let d = await r.json();
-	if (!d.success) {
-		console.error('NoBounce Error:', d.trace);
-		return null
-	};
-	if (d.result?.exists == false) return false;
-	if (d.result?.temp == true) return false;
-	if (d.result?.exists == true && d.result?.temp == false) return true;
-	return null;
-}
-
-export async function hashPassword(password: string) {
-	return await bcrypt.hash(password, await bcrypt.genSalt(7))
-}
-
-export async function comparePassword(password: string, hash: string) {
-  return await bcrypt.compare(password, hash)
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type WithoutChild<T> = T extends { child?: any } ? Omit<T, "child"> : T;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type WithoutChildren<T> = T extends { children?: any } ? Omit<T, "children"> : T;
+export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
+export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };

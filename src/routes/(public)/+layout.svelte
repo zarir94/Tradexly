@@ -1,5 +1,6 @@
 <script lang="ts">
 	//@ts-nocheck
+	import "./app.css";
 	import SL from "$lib/assets/site-logo.png";
 	import SI from "$lib/assets/site-icon.png";
 	import Rocket from "@lucide/svelte/icons/rocket";

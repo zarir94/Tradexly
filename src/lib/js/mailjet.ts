@@ -1,6 +1,6 @@
 //@ts-nocheck
 import Mailjet from "node-mailjet";
-import { getSettings } from "../utils";
+import { getSettings } from "../func";
 
 
 export async function sendMail(email: string, name: string, subject: string, html: string) {
