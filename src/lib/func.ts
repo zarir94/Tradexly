@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import prisma from "./prisma";
+import currencies from "./currencies";
 
 function parseValue(val: string): string | number | boolean {
 	if (val === 'true') return true;
@@ -38,3 +39,22 @@ export async function hashPassword(password: string) {
 export async function comparePassword(password: string, hash: string) {
   return await bcrypt.compare(password, hash)
 }
+
+export async function getExchangeRate(from: keyof typeof currencies, to: keyof typeof currencies) {
+	let f = from.toLowerCase().trim();
+	let t = to.toLowerCase().trim();
+	let fn = async (u: string)=>{
+		let r = await fetch(u);
+		let d = await r.json();
+		let ex = d[f][t];
+		if (!Number.isFinite(ex)) throw new Error('Cannot find the rate. API Broken maybe');
+		return ex;
+	}
+	try {
+		return await fn(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${f}.json`);
+	} catch (err) {
+		return await fn(`https://latest.currency-api.pages.dev/v1/currencies/${f}.json`);
+	}
+}
+
+

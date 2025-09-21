@@ -30,6 +30,7 @@ model User {
   updatedAt    DateTime @updatedAt
 
   // Relations
+  notifications Notification[]
   sessions      Session[]
   accounts      Account[]
   transactions  Transaction[]
@@ -43,6 +44,16 @@ enum UserRole {
   ADMIN
   TRADER
   PARTNER
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  seen      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Session {

@@ -2,7 +2,8 @@
 	//@ts-nocheck
 	import * as Sidebar from '$lib/components/ui/sidebar/index';
 	import * as Collapsible from "$lib/components/ui/collapsible/index";
-	import { BanknoteArrowDownIcon, BanknoteArrowUpIcon, BookOpenTextIcon, ChartCandlestickIcon, ChartLineIcon, ChevronDown, CircleUserRoundIcon, FileInputIcon, FileOutputIcon, GiftIcon, GraduationCapIcon, HeadsetIcon, HistoryIcon, IdCardIcon, MessageCircleQuestionIcon, ShieldIcon, TicketCheckIcon, TrophyIcon, WalletIcon } from '@lucide/svelte';
+	import { BanknoteArrowDownIcon, BanknoteArrowUpIcon, BookOpenTextIcon, ChartCandlestickIcon, ChartLineIcon, ChevronDown, CircleUserRoundIcon, FileInputIcon, FileOutputIcon, GiftIcon, GraduationCapIcon, HeadsetIcon, HistoryIcon, IdCardIcon, MessageCircleQuestionIcon, PowerIcon, ShieldIcon, TicketCheckIcon, TrophyIcon, WalletIcon } from '@lucide/svelte';
+	import SL from '$lib/assets/site-logo.png';
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
@@ -44,8 +45,9 @@
 		}
 		return [null, null];
 	}).filter(([r])=>Number.isFinite(r))[0];
-	$: locals = { cur_menu: mi };
-
+	let openCount : 'single' | 'multiple' = 'multiple';
+	let defaultOpen = true; // Must set false if single
+	$: locals = { ms: Object.fromEntries(menu_items.map((_, i)=>(mi == i ? [i, true] : [i, defaultOpen]))) };
   $: sidebar = Sidebar.useSidebar();
   afterNavigate(()=>{
 		sidebar.setOpenMobile(false);
@@ -53,13 +55,18 @@
 </script>
 
 <Sidebar.Root>
+	<Sidebar.Header>
+		<div class="flex items-center justify-center relative after:absolute after:w-full after:h-full after:top-0 after:left-0">
+			<img class="w-42" src="{SL}" alt="{$page.data.cached.site_name}">
+		</div>
+	</Sidebar.Header>
 	<Sidebar.Content>
 		<Sidebar.Group>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
 					{#each menu_items as [name, url, icon, submenu], i}
 						{#if submenu}
-							<Collapsible.Root class="group/collapsible" open={locals.cur_menu == i} onOpenChange={()=>{locals.cur_menu = i}}>
+							<Collapsible.Root class="group/collapsible" bind:open={locals.ms[i]} onOpenChange={()=>{if (openCount == 'single') { Object.keys(locals.ms).map(p=>{if (p != i) {locals.ms[p] = !1}}) }}}>
 								<Sidebar.MenuItem>
 									<Collapsible.Trigger>
 										{#snippet child({ props })}
@@ -119,5 +126,6 @@
 
 <style lang="postcss">
 	@reference 'tailwindcss';
-	a[data-svtpxplopes="menu"] span, a[data-svtpxplopes="submenu"] span { @apply text-lg tracking-wider; }
+	a[data-svtpxplopes="menu"] span, a[data-svtpxplopes="submenu"] span { @apply text-base tracking-wide; }
+	a[data-svtpxplopes="menu"] :global(svg):first-child, a[data-svtpxplopes="submenu"] :global(svg):first-child { @apply size-5; }
 </style>

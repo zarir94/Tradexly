@@ -136,7 +136,7 @@
 			left: calc(100% + 7px);
 		}
 	}
-	.sla img { --ds: drop-shadow(0px 0px 3px theme(--color-emerald-800)); filter: var(--ds); -webkit-filter: var(--ds); }
+	.sla img { --ds: drop-shadow(0px 0px 8px theme(--color-emerald-800)); filter: var(--ds); -webkit-filter: var(--ds); }
 	.upd .sla { @apply scale-[120%] translate-x-[10%] sm:scale-[140%] sm:translate-x-[20%] lg:scale-[160%] lg:translate-x-[30%]; }
 	.dwnd .sla { @apply scale-[110%] translate-x-[5%] sm:scale-[120%] sm:translate-x-[10%] lg:scale-[130%] lg:translate-x-[15%]; }
 </style>
