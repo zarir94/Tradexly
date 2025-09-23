@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import prisma from "./prisma";
 import currencies from "./currencies";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 
 function parseValue(val: string): string | number | boolean {
 	if (val === 'true') return true;
