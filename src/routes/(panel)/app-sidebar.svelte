@@ -2,7 +2,7 @@
 	//@ts-nocheck
 	import * as Sidebar from '$lib/components/ui/sidebar/index';
 	import * as Collapsible from "$lib/components/ui/collapsible/index";
-	import { BanknoteArrowDownIcon, BanknoteArrowUpIcon, BookOpenTextIcon, ChartCandlestickIcon, ChartLineIcon, ChevronDown, CircleUserRoundIcon, FileInputIcon, FileOutputIcon, GiftIcon, GraduationCapIcon, HeadsetIcon, HistoryIcon, IdCardIcon, MessageCircleQuestionIcon, PowerIcon, ShieldIcon, TicketCheckIcon, TrophyIcon, WalletIcon } from '@lucide/svelte';
+	import { BanknoteArrowDownIcon, BanknoteArrowUpIcon, BellIcon, BookOpenTextIcon, ChartCandlestickIcon, ChartLineIcon, ChevronDown, CircleUserRoundIcon, FileInputIcon, FileOutputIcon, GiftIcon, GraduationCapIcon, HeadsetIcon, HistoryIcon, IdCardIcon, MessageCircleQuestionIcon, PowerIcon, ShieldIcon, TicketCheckIcon, TrophyIcon, WalletIcon } from '@lucide/svelte';
 	import SL from '$lib/assets/site-logo.png';
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
@@ -15,6 +15,7 @@
 			['Leaderboard', '/dashboard/leaderboard', TrophyIcon],
 			['Bonus & Promo', '/dashboard/bonus-promo', GiftIcon]
 		]],
+		
 		['Wallet', '#', WalletIcon, [
 			['Deposit Funds', '/dashboard/deposit', BanknoteArrowUpIcon],
 			['Deposit History', '/dashboard/deposit-history', FileInputIcon],
@@ -25,7 +26,8 @@
 
 		['Account', '#', CircleUserRoundIcon, [
 			['My Profile', '/dashboard/profile', IdCardIcon],
-			['Security Settings', '/dashboard/security', ShieldIcon]
+			['Security Settings', '/dashboard/security', ShieldIcon],
+			['Notifications', '/dashboard/notifications', BellIcon]
 		]],
 
 		['Resources', '#', BookOpenTextIcon, [

@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import prisma from "./prisma";
 import currencies from "./currencies";
+import { createHash } from "crypto";
 
 function parseValue(val: string): string | number | boolean {
 	if (val === 'true') return true;
@@ -57,4 +58,31 @@ export async function getExchangeRate(from: keyof typeof currencies, to: keyof t
 	}
 }
 
+export function getGravatarUrl(email: string, size: number = 80) {
+	let trimmedEmail = email.trim().toLowerCase();
+	let hash = createHash('sha256').update(trimmedEmail).digest('hex');
+	return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
+}
+
+export function timeAgo(date: Date) {
+    const now = new Date();
+    const seconds = Math.floor((+now - +date) / 1000);
+
+    const intervals = [
+		{ label: 'w', seconds: 7 * 24 * 60 * 60 },
+		{ label: 'd', seconds: 24 * 60 * 60 },
+		{ label: 'h', seconds: 60 * 60 },
+		{ label: 'm', seconds: 60 },
+		{ label: 's', seconds: 1 }
+	];
+
+    for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+            return `${count}${interval.label} ago`;
+        }
+    }
+
+    return 'just now';
+}
 
