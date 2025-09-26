@@ -130,3 +130,10 @@
         @apply cursor-pointer;
     }
 }
+
+button.isLoading { position: relative; }
+button.isLoading * { opacity: 0; visibility: hidden; }
+button.isLoading::after {
+    @apply absolute top-1/2 left-1/2 h-full border-4 border-transparent border-x-[currentColor] aspect-square -translate-1/2 rounded-full animate-spin scale-50;
+    content: "";
+}
