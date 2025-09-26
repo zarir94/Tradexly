@@ -3,6 +3,7 @@ import { redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import prisma from "$main/src/lib/prisma";
 import { comparePassword, hashPassword, isEmailAcceptable } from "$main/src/lib/func";
+import cached from "$main/src/lib/cache";
 
 function daysFromNow(x: number): Date {
     const d = new Date();
@@ -57,6 +58,7 @@ export const actions: Actions = {
                 let user = await tx.user.create({ data: { fullName, username, email, country, affID, passwordHash: await hashPassword(password) } });
                 await tx.account.create({ data: { userId: user.id, type: 'DEMO', balance: 10000 } });
                 await tx.account.create({ data: { userId: user.id, type: "LIVE", balance: 0 } });
+                await tx.notification.create({ data: { userId: user.id, title: `Welcome to ${cached.site_name}`, message: 'Your account has been successfully created. Start exploring the markets and experience seamless trading today.' } })
             })
             return { type: 'success', message: 'Account Registered Successfully!' }
         } catch (err) {

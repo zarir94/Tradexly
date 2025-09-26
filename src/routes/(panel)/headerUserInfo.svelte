@@ -22,10 +22,10 @@
   </Popover.Trigger>
   <Popover.Content class="w-56 px-0 py-3" align="end">
     <div class="flex gap-3 items-center px-3">
-      <img class="h-10 rounded-full" src="{$page.data.user.img}" alt="{$page.data.user.fullName}">
+      <img class="h-10 w-10 rounded-full text-transparent border" src="{$page.data.user.img}" alt="{$page.data.user.fullName}">
       <div class="flex flex-col text-left">
         <span class="truncate" style="--w: 145px">{$page.data.user.fullName}</span>
-        <button class="truncate text-muted-foreground hover:text-white/80 cursor-pointer outline-0" style="--w: 145px" data-tooltip="Copy" on:click={()=>{navigator.clipboard.writeText($page.data.user.email).then(_=>toast.success('Email copied to clipboard'))}}>{$page.data.user.email}</button>
+        <button class="truncate text-muted-foreground hover:text-white/80 cursor-pointer outline-0" style="--w: 145px" on:click={()=>{ navigator.clipboard ?  navigator.clipboard?.writeText($page.data.user.email).then(_=>toast.success('Email copied to clipboard')).catch(e=>toast.error('Cannot access clipboard. Error: ' + (e?.message || 'Unknown'))) : toast.error('Cannot access clipboard.')}}>{$page.data.user.email}</button>
       </div>
     </div>
     <Separator class="my-2"/>

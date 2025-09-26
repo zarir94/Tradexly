@@ -10,15 +10,24 @@
 	import { Skeleton } from "$main/src/lib/components/ui/skeleton/index";
 	import { toast } from "svelte-sonner";
 	import * as Alert from "$main/src/lib/components/ui/alert/index";
+	import { tick } from "svelte";
   $: unseenCount = $page.data.unseenNotificationCount;
   let open = false;
   let refreshKey = 1;
   afterNavigate(()=>{ open = false });
   async function markAllRead() {
+    this?.setAttribute('disabled', "true");
+    this?.classList.add('isLoading');
+    let rv = ()=>{
+      this?.removeAttribute('disabled');
+      this?.classList.remove('isLoading');
+    }
     let r = await fetch('/dashboard/api-markAllNotificationsSeen', { method: 'POST' }).then(r=>r.ok ? r.json() : false);
-    if (!r) { return toast.error('Something went wrong. Unable to mark all notifications as read.') }
+    if (!r) { rv(); return toast.error('Something went wrong. Unable to mark all notifications as read.') }
     refreshKey = Math.floor(Math.random() * 1e5);
     await invalidateAll();
+    await tick();
+    rv();
   }
 </script>
 
@@ -58,7 +67,7 @@
     <div class="flex justify-between items-center px-3">
       <h3 class="text-lg font-bold">Notifications</h3>
       {#if unseenCount}
-        <Button variant="ghost" size="sm" class="text-primary/90" onclick={markAllRead}><MailCheckIcon/> All Read</Button>
+        <Button variant="ghost" size="sm" class="text-primary/90" onclick={markAllRead}><MailCheckIcon/> <span>All Read</span></Button>
       {/if}
     </div>
     <Separator class="mt-1"/>
@@ -67,8 +76,13 @@
       {#await fetch('/dashboard/api-getNotifications', { method: 'POST' }).then(r=>r.ok ? r.json() : false)}
         {#each { length: 5 } as _}{@render notification()}{/each}
         {:then r}
-        {#if r}
+        {#if r && r.length}
         {#each r as n}{@render notification(n)}{/each}
+        {:else if r.length == 0}
+          <Alert.Root class="border-0 items-center justify-center text-center">
+            <Alert.Title class="text-base">No Notifications Yet</Alert.Title>
+            <Alert.Description>You’re all caught up! New updates and alerts will appear here.</Alert.Description>
+          </Alert.Root>
         {:else}
           <Alert.Root variant="destructive" class="border-0 items-center">
             <CircleAlertIcon class="size-6 shrink-0"/>
@@ -81,7 +95,7 @@
     </div>
     <Separator class="mb-2"/>
     <div class="px-3">  
-      <Button variant="secondary" class="w-full" href="/dashboard/notifications">View All Notifications</Button>
+      <Button variant="ghost" class="w-full" href="/dashboard/notifications">View All Notifications</Button>
     </div>
   </Popover.Content>
 </Popover.Root>

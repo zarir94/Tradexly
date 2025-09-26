@@ -46,7 +46,7 @@
 
 <Background/>
 
-<div class="w-full h-full text-white">
+<div class="w-full h-full text-white" data-sveltekit-preload-data="hover">
 	<div class="max-w-screen-2xl mx-auto header-container p-1 sm:p-1.5 md:p-2 lg:p-3 sticky top-0 left-0 z-30">
 		<header class="w-full h-14 {locals.scrollY > 60 ? 'bg-white/10 backdrop-blur-xl dwnd' : 'upd'} rounded-xl px-3 py-2 flex justify-between items-center transition-all duration-300 ease-out">
 			<button class="md:hidden flex items-center mr-3 cursor-pointer" on:click={()=>locals.showMenu = true}>

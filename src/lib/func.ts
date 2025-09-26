@@ -86,3 +86,23 @@ export function timeAgo(date: Date) {
     return 'just now';
 }
 
+/**
+ * Parses pagination parameters from a URL and returns pagination values.
+ *
+ * @returns An object containing:
+ *   - take: The number of items to take per page (minimum 1).
+ *   - page: The current page number (minimum 1).
+ *   - skip: The calculated offset for pagination (zero or positive).
+ */
+export function parsePaginationArgs(url: URL, default_take: number = 10) {
+	let { max, page } = Object.fromEntries(url.searchParams.entries());
+
+    let take = +max || default_take;
+    take = take < 1 ? 1 : take;
+	
+    let newPage = +page || 1;
+    newPage = newPage < 1 ? 1 : newPage;
+	
+	let skip = (newPage - 1) * take;
+	return { take, page: newPage, skip };
+}
