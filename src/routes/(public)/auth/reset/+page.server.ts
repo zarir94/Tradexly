@@ -3,6 +3,7 @@ import { sendMail } from "$main/src/lib/js/mailjet";
 import prisma from "$main/src/lib/prisma";
 import { hashPassword } from "$main/src/lib/func";
 import type { Actions, PageServerLoad } from "./$types";
+import { redirect } from "@sveltejs/kit";
 
 let resetEmailHTML = (name: string, link: string) => `
 <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8" style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
@@ -53,9 +54,6 @@ let resetEmailHTML = (name: string, link: string) => `
 
 
 export const load: PageServerLoad = async ({ url, locals }) => {
-    if (locals.session) {
-        redirect(302, '/dashboard')
-    }
     let alerts = [];
     let token = null;
     let query_token = url.searchParams.get('token');

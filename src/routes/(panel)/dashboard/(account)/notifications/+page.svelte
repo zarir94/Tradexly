@@ -53,6 +53,17 @@
 		{/if}
 	</div>
 	<div class="flex flex-col gap-5 mb-5">
+		{#if data.notifications?.length == 0}
+			<div class="flex flex-col items-center justify-center py-16 px-8 text-center">
+				<div class="bg-muted/50 p-4 rounded-full mb-6">
+					<BellIcon class="size-8 text-muted-foreground"/>
+				</div>
+				<h3 class="text-xl font-semibold text-foreground mb-2">No notifications yet</h3>
+				<p class="text-muted-foreground max-w-md">
+					You're all caught up! We'll notify you here when there are new updates or important messages.
+				</p>
+			</div>
+		{/if}
 		{#each data.notifications as n, i (n.id || i)}
 			<div class="{n.seen ? '' : 'noti-new'} bg-card border group shadow rounded-lg py-3 px-5 flex gap-2 items-center justify-between hover:bg-zinc-800/80 transition duration-300 ease-out" in:fly|global={ blockAnimation ? { delay: 0, duration: 0, opacity: 1 } : { x: ((-1)**i) * 100 + '%', duration: 300, delay: i*100 }}>
 				<div>
@@ -89,6 +100,11 @@
 	<div class="flex gap-3 mb-3">
 		{#if data.page > 1}
 			<Button size="icon" href="{getUpdatedUrl('page', data.page - 1)}" class="mr-auto"><ChevronLeft class="size-5"/></Button>
+		{/if}
+		{#if !( data.page == 1 && !data.hasNext )}
+			<div class="flex-1 flex justify-center">
+				<span class="px-3 py-2 text-sm text-muted-foreground bg-muted rounded-md">Page {data.page}</span>
+			</div>
 		{/if}
 		{#if data.hasNext}
 			<Button size="icon" href="{getUpdatedUrl('page', data.page + 1)}" class="ml-auto"><ChevronRight class="size-5"/></Button>

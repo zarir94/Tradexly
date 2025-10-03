@@ -14,7 +14,7 @@ function parseValue(val: string): string | number | boolean {
 }
 
 export async function getSettings(...keys: string[]) {
-    let r = await prisma.settings.findMany({ where: { key: { in: keys } } });
+    let r = await prisma.settings.findMany({ where: { key: { in: keys } }, cacheStrategy: { ttl: 30 * 60,  tags: ['settings_cache'] } });
     let d = Object.fromEntries(r.map(i => [i.key, parseValue(i.value)]));
     return d;
 }

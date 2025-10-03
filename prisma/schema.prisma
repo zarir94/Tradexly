@@ -25,6 +25,8 @@ model User {
   fullName     String?
   country      String?
   resetToken   String?  @unique
+  kyc_id       String?  @unique
+  kyc_valid    Boolean  @default(false)
   role         UserRole @default(TRADER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

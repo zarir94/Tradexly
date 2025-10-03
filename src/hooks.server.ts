@@ -35,7 +35,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	let dbSes;
 	let session = event.cookies.get('session');
-	if (session) { dbSes = await prisma.session.findFirst({ where: { token: session }, include: { user: true } }) }
+	if (session) { dbSes = await prisma.session.findFirst({ where: { token: session }, include: { user: true }, cacheStrategy: { swr: 30 } }) }
 	event.locals.session = dbSes;
 
 	if (

@@ -16,6 +16,9 @@ declare global {
 					username: string;
 					fullName: string | null;
 					country: string | null;
+					resetToken: string | null;
+					kyc_id: string | null;
+					kyc_valid: boolean;
 					role: "ADMIN" | "TRADER" | "PARTNER";
 					updatedAt: Date;
 				};

@@ -11,9 +11,10 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
             email: user.email,
             username: user.username,
             fullName: user.fullName,
+            kyc_valid: user.kyc_valid,
             country: user.country,
             img: getGravatarUrl(user.email),
         },
-        unseenNotificationCount: await prisma.notification.count({ where: { userId: user.id, seen: false } })
+        unseenNotificationCount: await prisma.notification.count({ where: { userId: user.id, seen: false }, cacheStrategy: { swr: 30 } })
     }
 };

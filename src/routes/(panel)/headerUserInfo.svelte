@@ -8,6 +8,7 @@
 	import { page } from "$app/stores";
 	import { toast } from "svelte-sonner";
 	import { afterNavigate } from "$app/navigation";
+	import { Badge } from "$main/src/lib/components/ui/badge";
   let open = false;
   afterNavigate(()=>{ open = false });
 </script>
@@ -26,6 +27,7 @@
       <div class="flex flex-col text-left">
         <span class="truncate" style="--w: 145px">{$page.data.user.fullName}</span>
         <button class="truncate text-muted-foreground hover:text-white/80 cursor-pointer outline-0" style="--w: 145px" on:click={()=>{ navigator.clipboard ?  navigator.clipboard?.writeText($page.data.user.email).then(_=>toast.success('Email copied to clipboard')).catch(e=>toast.error('Cannot access clipboard. Error: ' + (e?.message || 'Unknown'))) : toast.error('Cannot access clipboard.')}}>{$page.data.user.email}</button>
+        <Badge variant="secondary" class="font-semibold leading-none {$page.data.user.kyc_valid ? 'bg-emerald-800' : 'bg-amber-800'}">{$page.data.user.kyc_valid ? 'Verified' : 'Not Verified'}</Badge>
       </div>
     </div>
     <Separator class="my-2"/>

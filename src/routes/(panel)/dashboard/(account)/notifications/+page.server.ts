@@ -7,7 +7,7 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals, url }) => {
     let { take, page, skip } = parsePaginationArgs(url, 10);
 
-	let notifications = (await prisma.notification.findMany({ where: { userId: locals.session?.userId }, orderBy: { createdAt: 'desc' }, take: take + 1, skip})).map(i=>({...i, timeAgo: timeAgo(i.createdAt)}));
+	let notifications = (await prisma.notification.findMany({ where: { userId: locals.session?.userId }, orderBy: { createdAt: 'desc' }, take: take + 1, skip })).map(i=>({...i, timeAgo: timeAgo(i.createdAt)}));
     let hasNext = notifications.length == take + 1;
     if (hasNext) {notifications.pop()}
 
