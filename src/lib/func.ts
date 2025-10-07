@@ -2,6 +2,9 @@ import bcrypt from "bcryptjs";
 import prisma from "./prisma";
 import currencies from "./currencies";
 import { createHash } from "node:crypto";
+import cache from "memory-cache";
+
+export type currencyType = keyof typeof currencies;
 
 function parseValue(val: string): string | number | boolean {
 	if (val === 'true') return true;
@@ -13,10 +16,10 @@ function parseValue(val: string): string | number | boolean {
 	return val;
 }
 
-export async function getSettings(...keys: string[]) {
-    let r = await prisma.settings.findMany({ where: { key: { in: keys } }, cacheStrategy: { ttl: 30 * 60,  tags: ['settings_cache'] } });
+export async function getSettings<const K extends string>(...keys: K[]) {
+    let r = await prisma.settings.findMany({ where: { key: { in: keys } }, cacheStrategy: { ttl: 6 * 60 * 60,  tags: ['settings'] } });
     let d = Object.fromEntries(r.map(i => [i.key, parseValue(i.value)]));
-    return d;
+	return d as { [P in K]: string | number | boolean | undefined };;
 }
 
 export async function isEmailAcceptable(email: string) {
@@ -33,6 +36,10 @@ export async function isEmailAcceptable(email: string) {
 	return null;
 }
 
+export function isUsernameOK(t: string) {
+	return /^[a-zA-Z][a-zA-Z0-9._-]{2,29}$/.test(t || '');
+}
+
 export async function hashPassword(password: string) {
 	return await bcrypt.hash(password, await bcrypt.genSalt(7))
 }
@@ -41,7 +48,9 @@ export async function comparePassword(password: string, hash: string) {
   return await bcrypt.compare(password, hash)
 }
 
-export async function getExchangeRate(from: keyof typeof currencies, to: keyof typeof currencies) {
+export async function getExchangeRate(from: currencyType, to: currencyType) {
+	let cd = cache.get(`getExchangeRate:${from}:${to}`);
+	if (cd) { return cd };
 	let f = from.toLowerCase().trim();
 	let t = to.toLowerCase().trim();
 	let fn = async (u: string)=>{
@@ -49,6 +58,7 @@ export async function getExchangeRate(from: keyof typeof currencies, to: keyof t
 		let d = await r.json();
 		let ex = d[f][t];
 		if (!Number.isFinite(ex)) throw new Error('Cannot find the rate. API Broken maybe');
+		cache.put(`getExchangeRate:${from}:${to}`, ex, 6 * 60 * 60 * 1000);
 		return ex;
 	}
 	try {

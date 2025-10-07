@@ -19,6 +19,7 @@ export const actions: Actions = {
         let { action, id } = Object.fromEntries((await request.formData()).entries());
         let where = { id: String(id), userId: locals.session?.userId };
         try {
+            prisma.purgeCache(`noti_count_${where.userId}`);
             if (action == 'read') {
                 await prisma.notification.update({ where, data: { seen: true } });
                 return { success: true, msg: 'Notification marked as read!' }

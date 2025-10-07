@@ -14,6 +14,7 @@ export async function getNotifications({max = 10} = {}, locals: App.Locals) {
 
 export async function markAllNotificationsSeen({} = {}, locals: App.Locals) {
     await prisma.notification.updateMany({ where: { userId: locals.session?.userId, seen: false }, data: { seen: true } });
+    prisma.purgeCache(`noti_count_${locals.session?.userId}`);
     return {success: true};
 }
 

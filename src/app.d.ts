@@ -35,10 +35,6 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
-	type CacheData = {
-		site_name: string;
-		site_slogan: string;
-	}
 }
 
 export {};

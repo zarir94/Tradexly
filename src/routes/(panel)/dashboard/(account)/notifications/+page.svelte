@@ -98,17 +98,13 @@
 		{/each}
 	</div>
 	<div class="flex gap-3 mb-3">
-		{#if data.page > 1}
-			<Button size="icon" href="{getUpdatedUrl('page', data.page - 1)}" class="mr-auto"><ChevronLeft class="size-5"/></Button>
-		{/if}
+		<Button size="icon" href="{getUpdatedUrl('page', data.page - 1)}" class="mr-auto {data.page > 1 ? '' : 'invisible'}"><ChevronLeft class="size-5"/></Button>
 		{#if !( data.page == 1 && !data.hasNext )}
 			<div class="flex-1 flex justify-center">
 				<span class="px-3 py-2 text-sm text-muted-foreground bg-muted rounded-md">Page {data.page}</span>
 			</div>
 		{/if}
-		{#if data.hasNext}
-			<Button size="icon" href="{getUpdatedUrl('page', data.page + 1)}" class="ml-auto"><ChevronRight class="size-5"/></Button>
-		{/if}
+		<Button size="icon" href="{getUpdatedUrl('page', data.page + 1)}" class="ml-auto {data.hasNext ? '' : 'invisible'}"><ChevronRight class="size-5"/></Button>
 	</div>
 </div>
 <style lang="postcss">

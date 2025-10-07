@@ -12,9 +12,17 @@ export function enhanceWithLoader(
       submitter.setAttribute('disabled', "true");
       submitter.classList.add('isLoading');
     }
+    function cleanUP() {
+			if (submitter) {
+				submitter.removeAttribute('disabled');
+				submitter.classList.remove('isLoading');
+			}
+		}
+    let ogCancel = submitData.cancel;
+    submitData.cancel = ()=>{cleanUP(); ogCancel()};
 
     let result = submit?.(submitData);
-
+    
     return async (resultData) => {
       try {
         if (typeof result === 'function') {
@@ -26,10 +34,7 @@ export function enhanceWithLoader(
         console.error(err)
       }
       await tick();
-      if (submitter) {
-				submitter.removeAttribute('disabled');
-				submitter.classList.remove('isLoading');
-			};
+      cleanUP();
     };
   });
 }

@@ -15,6 +15,6 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
             country: user.country,
             img: getGravatarUrl(user.email),
         },
-        unseenNotificationCount: await prisma.notification.count({ where: { userId: user.id, seen: false }, cacheStrategy: { swr: 30 } })
+        unseenNotificationCount: await prisma.notification.count({ where: { userId: user.id, seen: false }, cacheStrategy: { ttl: 15 * 60,  tags: [ `noti_count_${user.id}` ] } })
     }
 };
