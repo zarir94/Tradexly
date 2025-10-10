@@ -66,6 +66,7 @@ model Session {
   token      String   @unique
   user_agent String?
   ip_address String?
+  location   String?
   createdAt  DateTime @default(now())
   expiresAt  DateTime
 }

@@ -29,7 +29,13 @@ export const actions: Actions = {
             }
             if (!u) return {type: 'error', message: 'The Account doesnt exists on the given username/email'};
             if (!await comparePassword(password, u.passwordHash)) return {type: 'error', message: 'Invalid Password!'};
-            let ses = await prisma.session.create({ data: { userId: u.id, token: crypto.randomUUID(), user_agent: locals.userAgent, ip_address: locals.clientIP, expiresAt: daysFromNow(30) } })
+
+            let loc = null;
+            try {
+                loc = await fetch('http://ip-api.com/json/' + ip).then((r) => r.json()).then((d)=>([d.city, d.country].filter(Boolean).join(', ') || null));
+            } catch (err) {}
+            
+            let ses = await prisma.session.create({ data: { userId: u.id, token: crypto.randomUUID(), user_agent: locals.userAgent, ip_address: locals.clientIP, location: loc, expiresAt: daysFromNow(30) } })
 
             cookies.set('session', ses.token, { path: '/', maxAge: 30 * 24 * 60 * 60, httpOnly: true, secure: false })
             toRun = ()=>{ redirect(302, '/dashboard') };
@@ -53,7 +59,10 @@ export const actions: Actions = {
             if (await prisma.user.findFirst({ where: { email } })) return {type: 'error', message: 'This email is already registered'};
             let esr = await isEmailAcceptable(email);
             if (esr == false) return {type: 'error', message: 'The provided email is not acceptable. Email may be disposable or fake.'};
-            let country = await fetch('http://ip-api.com/json/' + ip).then(r=>r.json()).then(d=>d.country || null);
+            let country = null;
+            try {
+                country = await fetch('http://ip-api.com/json/' + ip).then(r=>r.json()).then(d=>d.country || null);
+            } catch (err) {}
 
             await prisma.$transaction(async (tx) => {
                 let user = await tx.user.create({ data: { fullName, username, email, country, affID, passwordHash: await hashPassword(password) } });

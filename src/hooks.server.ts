@@ -18,7 +18,7 @@ function getClientIP(event: RequestEvent) {
 	try {
 		return event.getClientAddress();
 	} catch (err) {
-		'0.0.0.0'
+		return '0.0.0.0'
 	}
 }
 

@@ -12,7 +12,7 @@ function getSessionDevice(ua: string) {
 
 export const load: PageServerLoad = async ({ locals, url }) => {
     let { take, page, skip } = parsePaginationArgs(url);
-    let qSes = await prisma.session.findMany({ where: { userId: locals.session?.userId }, orderBy: { createdAt: 'desc' }, select: { id: true, user_agent: true, ip_address: true, createdAt: true }, take: take + 1, skip });
+    let qSes = await prisma.session.findMany({ where: { userId: locals.session?.userId }, orderBy: { createdAt: 'desc' }, select: { id: true, user_agent: true, ip_address: true, location: true, createdAt: true }, take: take + 1, skip });
     let hasNext = qSes.length == take + 1;
     if (hasNext) {qSes.pop()}
     

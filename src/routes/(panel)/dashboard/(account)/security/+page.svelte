@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from "$app/environment";
 	import { page } from "$app/stores";
   import * as Card from "$lib/components/ui/card";
 	import { Badge } from "$main/src/lib/components/ui/badge/index.js";
@@ -13,24 +12,6 @@
 
   export let data;
   export let form;
-
-  $: sessions = data.sessions.map(p=>({...p, location: undefined as string | undefined | null}));
-  
-  $: if (browser && sessions.length && !sessions.find(l=>l.location)) {
-    fetch('http://ip-api.com/batch', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json'}, body: JSON.stringify(sessions.map(t=>({ query: t.ip_address, fields: 'city,country,query'}))) })
-    .then(async (r)=>{
-      if (!r.ok) throw new Error(`API Error. Status: ${r.status}. Resp: ${await r.text()}`);
-      let d = await r.json();
-      let locs = Object.fromEntries(d.map((p: { query: string, country: string | undefined, city: string | undefined })=>{
-        let lc = [p.city, p.country].filter(Boolean).join(', ');
-        return [p.query, lc || 'N/A'];
-      }));
-      sessions = sessions.map(q=>({...q, location: locs[q.ip_address || ''] || 'N/A'}));
-    }).catch((e)=>{
-      console.error(e);
-      sessions = sessions.map(q=>({...q, location: q.location || null}));
-    })
-  }
   
   $: if (form?.msg) {
 		(form?.success ? toast.success : toast.error)(form?.msg)
@@ -100,7 +81,7 @@
     </Card.Header>
     <Card.Content>
       <div class="flex flex-col gap-4">
-        {#each sessions as s, i (s.id || i) }
+        {#each data.sessions as s, i (s.id || i) }
           <div class="bg-zinc-800/30 border py-3 px-5 rounded-lg flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div class="flex flex-col gap-1 w-full">
               <div class="flex items-center gap-2">
@@ -109,16 +90,11 @@
                   <Badge>Current</Badge>
                 {/if}
               </div>
-              <div class="flex items-center gap-2 opacity-80 text-sm"><ClockIcon class="size-4"/> <span>{s.createdAt.toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' }).replace(',', '')}</span></div>
               <div class="flex items-center gap-2 opacity-80 text-sm">
-                <MapPinIcon class="size-4"/>
-                {#if s.location == undefined}
-                  <Skeleton class="w-28 h-[1.43em] bg-zinc-800"/>
-                {:else if s.location == null}
-                  <Badge variant="destructive" class="px-1.5 leading-none min-h-[1.67em]">ERROR</Badge>
-                {:else}
-                  <span>{s.location}</span>
-                {/if}
+                <ClockIcon class="size-4"/> <span>{s.createdAt.toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' }).replace(',', '')}</span>
+              </div>
+              <div class="flex items-center gap-2 opacity-80 text-sm">
+                <MapPinIcon class="size-4"/> <span>{s.location || 'N/A'}</span>
               </div>
               <div>
                 <Button class="!p-0 h-auto opacity-80 text-sm" variant="link" target="_blank" href="https://ipinfo.io/{s.ip_address}"><ServerIcon class="size-4"/> {s.ip_address}</Button>
@@ -134,7 +110,7 @@
             {/if}
           </div>
         {/each}
-        {#if sessions.length == 0}
+        {#if data.sessions.length == 0}
           <div class="flex flex-col gap-5 my-10">
             <div class="p-3 rounded-lg bg-primary/10 mx-auto"><MonitorXIcon class="size-8"/></div>
             <div class="text-center text-xl font-semibold opacity-80">No active sessions found{data.page == 1 ? '.' : ' on this page.'}</div>
