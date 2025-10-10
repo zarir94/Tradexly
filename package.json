@@ -57,6 +57,7 @@
 		"@types/memory-cache": "^0.2.6",
 		"bcryptjs": "^3.0.2",
 		"memory-cache": "^0.2.0",
-		"node-mailjet": "^6.0.9"
+		"node-mailjet": "^6.0.9",
+		"ua-parser-js": "^2.0.5"
 	}
 }

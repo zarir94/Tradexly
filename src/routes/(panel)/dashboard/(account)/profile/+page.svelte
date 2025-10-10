@@ -255,7 +255,7 @@
         </AlertDialog.Header>
         <AlertDialog.Footer>
           <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
-          <form action="?/deleteAccount" method="post" use:enhanceWithLoader>
+          <form class="flex flex-col" action="?/deleteAccount" method="post" use:enhanceWithLoader>
             <AlertDialog.Action type="submit" class={buttonVariants({variant: 'destructive'})}>
               <span>Delete</span>
             </AlertDialog.Action>

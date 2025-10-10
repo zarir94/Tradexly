@@ -1,186 +1,155 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "$lib/components/ui/card";
-  import { Button } from "$lib/components/ui/button";
-  import { Input } from "$lib/components/ui/input";
-  import { Label } from "$lib/components/ui/label";
-  import { Badge } from "$lib/components/ui/badge";
+	import { browser } from "$app/environment";
+	import { page } from "$app/stores";
+  import * as Card from "$lib/components/ui/card";
+	import { Badge } from "$main/src/lib/components/ui/badge/index.js";
+	import { Button } from "$main/src/lib/components/ui/button";
+	import { Input } from "$main/src/lib/components/ui/input";
+	import { Label } from "$main/src/lib/components/ui/label";
+	import { Skeleton } from "$main/src/lib/components/ui/skeleton/index.js";
+	import { enhanceWithLoader } from "$main/src/lib/publicFunc";
+	import { ChevronLeft, ChevronRight, ClockIcon, HammerIcon, KeyRoundIcon, MapPinIcon, MonitorSmartphoneIcon, MonitorXIcon, ServerIcon } from "@lucide/svelte";
+	import { toast } from "svelte-sonner";
 
-  // Demo session data
-  const sessions = [
-    {
-      id: 1,
-      device: "Chrome on Windows",
-      ip: "192.168.1.100",
-      location: "New York, US",
-      loginTime: "2024-01-15 10:30:45",
-      isCurrent: true
-    },
-    {
-      id: 2,
-      device: "Safari on iPhone",
-      ip: "203.0.113.45",
-      location: "California, US",
-      loginTime: "2024-01-14 18:22:12",
-      isCurrent: false
-    },
-    {
-      id: 3,
-      device: "Firefox on Linux",
-      ip: "198.51.100.78",
-      location: "London, UK",
-      loginTime: "2024-01-13 09:15:33",
-      isCurrent: false
-    },
-    {
-      id: 4,
-      device: "Edge on Windows",
-      ip: "203.0.113.12",
-      location: "Toronto, CA",
-      loginTime: "2024-01-12 14:45:20",
-      isCurrent: false
-    }
-  ];
+  export let data;
+  export let form;
 
-  // Form bindings
-  let currentPassword = $state("");
-  let newPassword = $state("");
-  let confirmPassword = $state("");
-
-  function handlePasswordChange() {
-    // Password change logic will be implemented by user
-    console.log("Password change requested");
+  $: sessions = data.sessions.map(p=>({...p, location: undefined as string | undefined | null}));
+  
+  $: if (browser && sessions.length && !sessions.find(l=>l.location)) {
+    fetch('http://ip-api.com/batch', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json'}, body: JSON.stringify(sessions.map(t=>({ query: t.ip_address, fields: 'city,country,query'}))) })
+    .then(async (r)=>{
+      if (!r.ok) throw new Error(`API Error. Status: ${r.status}. Resp: ${await r.text()}`);
+      let d = await r.json();
+      let locs = Object.fromEntries(d.map((p: { query: string, country: string | undefined, city: string | undefined })=>{
+        let lc = [p.city, p.country].filter(Boolean).join(', ');
+        return [p.query, lc || 'N/A'];
+      }));
+      sessions = sessions.map(q=>({...q, location: locs[q.ip_address || ''] || 'N/A'}));
+    }).catch((e)=>{
+      console.error(e);
+      sessions = sessions.map(q=>({...q, location: q.location || null}));
+    })
   }
+  
+  $: if (form?.msg) {
+		(form?.success ? toast.success : toast.error)(form?.msg)
+	}
 
-  function terminateSession(sessionId: number) {
-    // Session termination logic will be implemented by user
-    console.log("Terminate session:", sessionId);
-  }
+  function getUpdatedUrl(paramName: string, paramValue: any) {
+		let url = new URL($page.url.toString());
+		url.searchParams.set(paramName, paramValue);
+		return url.search;
+	}
 </script>
 
 <svelte:head>
-  <title>Security Settings - Tradexly</title>
+  <title>Security Settings - {data.cached.site_name}</title>
 </svelte:head>
 
-<div class="container mx-auto p-6 space-y-6">
-  <!-- Password Change Section -->
-  <Card class="w-full">
-    <CardHeader>
-      <CardTitle class="text-xl font-semibold">Change Password</CardTitle>
-      <CardDescription>
-        Update your account password to keep your account secure
-      </CardDescription>
-    </CardHeader>
-    <CardContent class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="space-y-2">
-          <Label for="current-password">Current Password</Label>
-          <Input
-            id="current-password"
-            type="password"
-            placeholder="Enter current password"
-            bind:value={currentPassword}
-          />
+<div class="p-3 md:p-4 lg:p-5 secPage">
+  <Card.Root>
+    <Card.Header>
+      <div class="flex items-center gap-3">
+        <div class="bg-primary/10 p-2 rounded-md">
+          <KeyRoundIcon class="text-primary size-5"/>
         </div>
-        <div class="space-y-2">
-          <Label for="new-password">New Password</Label>
-          <Input
-            id="new-password"
-            type="password"
-            placeholder="Enter new password"
-            bind:value={newPassword}
-          />
+        <div>
+          <Card.Title class="text-xl md:text-2xl">Change Password</Card.Title>
+          <Card.Description>Update your account password to keep your account secure</Card.Description>
         </div>
       </div>
-      <div class="space-y-2">
-        <Label for="confirm-password">Confirm New Password</Label>
-        <Input
-          id="confirm-password"
-          type="password"
-          placeholder="Confirm new password"
-          bind:value={confirmPassword}
-        />
-      </div>
-      <div class="flex gap-2 pt-4">
-        <Button onclick={handlePasswordChange} class="bg-primary hover:bg-primary/90">
-          Change Password
-        </Button>
-        <Button variant="outline" onclick={() => { currentPassword = ''; newPassword = ''; confirmPassword = ''; }}>
-          Cancel
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-
-  <!-- Session Management Section -->
-  <Card class="w-full">
-    <CardHeader>
-      <CardTitle class="text-xl font-semibold">Active Sessions</CardTitle>
-      <CardDescription>
-        Manage your active sessions across different devices and locations
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div class="space-y-4">
-        <!-- Session List -->
-        <div class="space-y-3">
-          {#each sessions as session (session.id)}
-            <div class="flex flex-col md:flex-row md:items-center justify-between p-4 border rounded-lg bg-card/50 hover:bg-card/80 transition-colors">
-              <div class="flex-1 space-y-2 md:space-y-0">
-                <div class="flex items-center gap-2">
-                  <span class="font-medium text-sm">{session.device}</span>
-                  {#if session.isCurrent}
-                    <Badge variant="default" class="text-xs">Current Session</Badge>
-                  {/if}
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
-                  <div>
-                    <span class="font-medium">IP:</span> {session.ip}
-                  </div>
-                  <div>
-                    <span class="font-medium">Location:</span> {session.location}
-                  </div>
-                </div>
-                <div class="text-sm text-muted-foreground">
-                  <span class="font-medium">Login Time:</span> {session.loginTime}
-                </div>
-              </div>
-              <div class="flex gap-2 mt-3 md:mt-0">
-                {#if !session.isCurrent}
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onclick={() => terminateSession(session.id)}
-                  >
-                    Terminate
-                  </Button>
-                {:else}
-                  <Button variant="outline" size="sm" disabled>
-                    Current
-                  </Button>
-                {/if}
-              </div>
-            </div>
-          {/each}
-        </div>
-
-        <!-- Summary -->
-        <div class="pt-4 border-t">
-          <div class="flex flex-col md:flex-row md:items-center justify-between text-sm text-muted-foreground">
-            <span>Showing {sessions.length} active session{sessions.length !== 1 ? 's' : ''}</span>
-            <span class="mt-2 md:mt-0">
-              Last activity: {new Date().toLocaleString()}
-            </span>
+    </Card.Header>
+    <Card.Content>
+      <form class="" action="?/changePassword" method="post" use:enhanceWithLoader>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <Label for="currentPassword">Current Password</Label>
+            <Input type="password" id="currentPassword" name="currentPassword" placeholder="Enter your current password" aria-invalid={form?.fields?.includes('currentPassword')} required/>
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="newPassword">New Password</Label>
+            <Input type="password" id="newPassword" name="newPassword" placeholder="Enter a strong password" aria-invalid={form?.fields?.includes('newPassword')} required/>
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="confirmPassword">Confirm New Password</Label>
+            <Input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your new password" aria-invalid={form?.fields?.includes('confirmPassword')} required/>
+          </div>
+          <div class="flex">
+            <Button type="submit"><span>Change Password</span></Button>
           </div>
         </div>
+      </form>
+    </Card.Content>
+    <Card.Footer>
+      <Button variant="link" class="!p-0 h-auto" href="/auth/reset"><HammerIcon/> Forgot Password? Reset here</Button>
+    </Card.Footer>
+  </Card.Root>
+  <div class="my-5"></div>
+  <Card.Root>
+    <Card.Header>
+      <div class="flex items-center gap-3">
+        <div class="bg-primary/10 p-2 rounded-md">
+          <MonitorSmartphoneIcon class="text-primary size-5"/>
+        </div>
+        <div>
+          <Card.Title class="text-xl md:text-2xl">Active Sessions</Card.Title>
+          <Card.Description>Manage your active sessions across different devices and locations</Card.Description>
+        </div>
       </div>
-    </CardContent>
-  </Card>
+    </Card.Header>
+    <Card.Content>
+      <div class="flex flex-col gap-4">
+        {#each sessions as s, i (s.id || i) }
+          <div class="bg-zinc-800/30 border py-3 px-5 rounded-lg flex flex-col sm:flex-row gap-3 items-center justify-between">
+            <div class="flex flex-col gap-1 w-full">
+              <div class="flex items-center gap-2">
+                <h1 class="text-xl">{s.device}</h1>
+                {#if s.isCurrent}
+                  <Badge>Current</Badge>
+                {/if}
+              </div>
+              <div class="flex items-center gap-2 opacity-80 text-sm"><ClockIcon class="size-4"/> <span>{s.createdAt.toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' }).replace(',', '')}</span></div>
+              <div class="flex items-center gap-2 opacity-80 text-sm">
+                <MapPinIcon class="size-4"/>
+                {#if s.location == undefined}
+                  <Skeleton class="w-28 h-[1.43em] bg-zinc-800"/>
+                {:else if s.location == null}
+                  <Badge variant="destructive" class="px-1.5 leading-none min-h-[1.67em]">ERROR</Badge>
+                {:else}
+                  <span>{s.location}</span>
+                {/if}
+              </div>
+              <div>
+                <Button class="!p-0 h-auto opacity-80 text-sm" variant="link" target="_blank" href="https://ipinfo.io/{s.ip_address}"><ServerIcon class="size-4"/> {s.ip_address}</Button>
+              </div>
+            </div>
+            {#if !s.isCurrent}
+            <div class="">
+              <form action="?/terminateSession" method="post" use:enhanceWithLoader>
+                <input type="hidden" name="id" value="{s.id}">
+                <Button variant="ghost" class="text-destructive bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20" type="submit"><span>Terminate Session</span></Button>
+              </form>
+            </div>
+            {/if}
+          </div>
+        {/each}
+        {#if sessions.length == 0}
+          <div class="flex flex-col gap-5 my-10">
+            <div class="p-3 rounded-lg bg-primary/10 mx-auto"><MonitorXIcon class="size-8"/></div>
+            <div class="text-center text-xl font-semibold opacity-80">No active sessions found{data.page == 1 ? '.' : ' on this page.'}</div>
+          </div>
+        {/if}
+      </div>
+    </Card.Content>
+    <Card.Footer>
+      <div class="flex gap-3 w-full" class:hidden={data.page == 1 && !data.hasNext}>
+        <Button size="icon" href="{getUpdatedUrl('page', data.page - 1)}" class="mr-auto {data.page > 1 ? '' : 'invisible'}"><ChevronLeft class="size-5"/></Button>
+        <div class="flex-1 flex justify-center">
+          <span class="px-3 py-2 text-sm text-muted-foreground bg-muted rounded-md">Page {data.page}</span>
+        </div>
+        <Button size="icon" href="{getUpdatedUrl('page', data.page + 1)}" class="ml-auto {data.hasNext ? '' : 'invisible'}"><ChevronRight class="size-5"/></Button>
+      </div>
+    </Card.Footer>
+  </Card.Root>
 </div>
-
-<style>
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-  }
-</style>

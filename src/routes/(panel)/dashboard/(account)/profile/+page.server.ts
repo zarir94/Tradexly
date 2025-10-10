@@ -78,11 +78,17 @@ export const load: PageServerLoad = async ({ locals }) => {
 	let user = locals.session.user;
 	let kycData = user.kyc_id ? await fetchKYCsession(user.kyc_id) : null;
 	if (!user.kyc_valid && kycData?.status == 'Approved') {
-		await prisma.user.update({ where: { id: user.id }, data: { kyc_valid: true } })
+		await prisma.$transaction(async (tx)=>{
+			await tx.user.update({ where: { id: user.id }, data: { kyc_valid: true } });
+			await tx.notification.create({ data: { userId: user.id, title: 'KYC Verified Successfully', message: 'Your identity has been successfully verified! You now have full access to all platform features, including deposits, withdrawals, and advanced trading options. Thank you for helping us keep our community secure.' } });
+		})
 		prisma.purgeCache(`ses_${locals.session.token}`)
 	}
 	if (user.kyc_valid && kycData && kycData.status != 'Approved') {
-		await prisma.user.update({ where: { id: user.id }, data: { kyc_valid: false } })
+		await prisma.$transaction(async (tx)=>{
+			await tx.user.update({ where: { id: user.id }, data: { kyc_valid: false } });
+			await tx.notification.create({ data: { userId: user.id, title: 'KYC Verification No Longer Valid', message: 'Your KYC verification has expired or been invalidated. To regain full access to deposits, withdrawals, and other features, please re-submit your verification documents in the verification section.' } });
+		})
 		prisma.purgeCache(`ses_${locals.session.token}`)
 	}
 

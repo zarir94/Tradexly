@@ -49,9 +49,9 @@
             </AlertDialog.Description>
           </AlertDialog.Header>
           <AlertDialog.Footer>
-            <form action="/dashboard">
+            <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+            <form class="flex flex-col" action="/dashboard">
               <input type="hidden" name="action" value="logout">
-              <AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
               <AlertDialog.Action type="submit" class={buttonVariants({variant: 'destructive'})}>Log Out</AlertDialog.Action>
             </form>
           </AlertDialog.Footer>
