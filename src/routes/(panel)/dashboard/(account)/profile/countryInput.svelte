@@ -54,9 +54,9 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content align="start" class="p-0">
-		<Command.Root style="width: {defWidth}px">
-			<Command.Input placeholder="Search Country..." />
+	<Popover.Content align="start" class="p-0 border-none">
+		<Command.Root class="border" style="width: {defWidth}px">
+			<Command.Input placeholder="Search a Country..." />
 			<Command.List>
 				<Command.Empty>{emptyText}</Command.Empty>
 				<Command.Group value="countries">
@@ -83,6 +83,3 @@
 	</Popover.Content>
 </Popover.Root>
 
-<style lang="postcss">
-  @reference 'tailwindcss';
-</style>
