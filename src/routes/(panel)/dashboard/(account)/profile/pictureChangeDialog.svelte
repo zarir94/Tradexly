@@ -16,7 +16,7 @@
 				<div class="p-2 rounded-md bg-primary/10">
 					<Camera class="size-5 text-primary" />
 				</div>
-				<div>
+				<div class="text-left">
 					<Dialog.Title>
 						Update Profile Picture
 					</Dialog.Title>

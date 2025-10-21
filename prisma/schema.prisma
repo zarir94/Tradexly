@@ -98,7 +98,7 @@ model Earnings {
   userId    String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   amount    Int
-  for      UserRole
+  for       UserRole
   from      String
   reason    String
   createdAt DateTime @default(now())
@@ -245,26 +245,27 @@ model Contact {
 }
 
 model SupportTicket {
-  id        String          @id @default(uuid())
-  userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  subject   String
-  messages  TicketMessage[]
-  status    TicketStatus    @default(OPEN)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id          String          @id @default(uuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     String
+  description String
+  messages    TicketMessage[]
+  status      TicketStatus    @default(OPEN)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 }
 
 enum TicketStatus {
   OPEN
-  IN_PROGRESS
-  RESOLVED
+  ANSWERED
+  REPLIED
   CLOSED
 }
 
 model TicketMessage {
   id        String        @id @default(uuid())
-  message   String
+  html      String
   from      FromType
   createdAt DateTime      @default(now())
   ticketId  String

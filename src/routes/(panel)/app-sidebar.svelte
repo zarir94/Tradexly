@@ -31,16 +31,16 @@
 		]],
 
 		['Resources', '#', BookOpenTextIcon, [
-			['Tutorials', '/dashboard/tutorials', GraduationCapIcon],
+			// ['Tutorials', '/dashboard/tutorials', GraduationCapIcon],
 			['Help Center', '/dashboard/helpcenter', MessageCircleQuestionIcon],
 			['Support Center', '/dashboard/support', HeadsetIcon]
 		]]
 	];
 	$: [mi, smi] = menu_items.map((m, i)=>{
-		if (m[1].startsWith(path)) {return [i, null]}
+		if (path.startsWith(m[1])) {return [i, null]}
 		if (m[3]) {
 			let si = m[3].map((s, j)=>{
-				if (s[1].startsWith(path)) {return j}
+				if (path.startsWith(s[1])) {return j}
 				return null;
 			}).filter(p=>Number.isFinite(p))[0];
 			if (Number.isFinite(si)) {return [i, si]}

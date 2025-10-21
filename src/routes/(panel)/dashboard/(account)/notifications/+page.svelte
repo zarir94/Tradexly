@@ -58,7 +58,7 @@
 				<div class="bg-muted/50 p-4 rounded-full mb-6">
 					<BellIcon class="size-8 text-muted-foreground"/>
 				</div>
-				<h3 class="text-xl font-semibold text-foreground mb-2">No notifications yet</h3>
+				<h3 class="text-xl font-semibold text-foreground mb-2">No notifications {data.page == 1 ? 'yet' : 'on this page'}</h3>
 				<p class="text-muted-foreground max-w-md">
 					You're all caught up! We'll notify you here when there are new updates or important messages.
 				</p>
